@@ -6,6 +6,7 @@ import ConfirmarCuenta from './paginas/ConfirmarCuenta'
 import OlvidePassword from './paginas/OlvidePassword'
 AuthLayout
 function App() {
+
   return (
     <BrowserRouter>
         <Routes>
