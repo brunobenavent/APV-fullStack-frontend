@@ -11,7 +11,7 @@ const Registrar = () => {
   const [alerta, setAlerta] = useState({})
 
 
-  const handelSubmit = async e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     if([nombre, email, password, repetirPassword].includes('')){
       setAlerta({msg: 'Hay campos vacios', error: true})
@@ -56,7 +56,7 @@ const Registrar = () => {
           {alerta.msg && <Alerta
             alerta={alerta}
           />}
-          <form action="" onSubmit={handelSubmit}>
+          <form action="" onSubmit={handleSubmit}>
             <div className="my-5">
               <label
                 htmlFor="nombre"

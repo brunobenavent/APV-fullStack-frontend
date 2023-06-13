@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import Alerta from "../components/Alerta"
 import clienteAxios from "../config/axios"
 
@@ -7,6 +7,7 @@ const NuevoPassword = () => {
     const [password, setPassword] = useState('')
     const [alerta, setAlerta] = useState({})
     const [tokenValido, setTokenValido] = useState(false)
+    const [passwordModificado, setPasswordModificado] = useState(false)
 
 
 
@@ -34,15 +35,27 @@ const NuevoPassword = () => {
     }, [])
     const handleSubmit = async e => {
         e.preventDefault()
+        if(password < 6){
+            setAlerta({
+                msg: 'El password debe contener almenos 6 caracteres',
+                error: true
+            })
+            return
+        }
+
         try {
             const url = `veterinarios/olvide-password/${token}`
-            const {data} = await clienteAxios.post(url, {password})
+            const { data } = await clienteAxios.post(url, {password})
+            setPasswordModificado(true)
 
             setAlerta({
                 msg: data.msg
             })
         } catch (error) {
-            console.log(error)
+            setAlerta({
+                msg: error.response.data.msg,
+                error: true
+            })
         }
     }
 
@@ -56,36 +69,39 @@ const NuevoPassword = () => {
                 alerta={alerta}
             />}
             {tokenValido && (
-                <form
-                    onSubmit={handleSubmit}
-                >
-                    <div className="my-5">
-                    <label
-                        htmlFor="password"
-                        className="uppercase text-gray-600 block text-xl font-bold"
-                    >Nuevo Password</label>
-                    <input
-                        type="password"
-                        placeholder="Tu Password"
-                        className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
-                        id="password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                    />
-                    </div>
-                    <input
-                        type="submit"
-                        value="Guardar Nuevo Password"
-                        className="bg-indigo-700 hover:bg-indigo-800 hover:cursor-pointer w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 md:w-auto"
-                    />
+                <>
+                    <form
+                        onSubmit={handleSubmit}
+                    >
+                        <div className="my-5">
+                        <label
+                            htmlFor="password"
+                            className="uppercase text-gray-600 block text-xl font-bold"
+                        >Nuevo Password</label>
+                        <input
+                            type="password"
+                            placeholder="Tu Password"
+                            className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
+                            id="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                        </div>
+                        <input
+                            type="submit"
+                            value="Guardar Nuevo Password"
+                            className="bg-indigo-700 hover:bg-indigo-800 hover:cursor-pointer w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 md:w-auto"
+                        />
 
-                </form>
-
-
+                    </form>
+                
+                    {passwordModificado && <Link
+                        to="/"
+                        className='block text-center my-5 text-gray-500'
+                    >Inicia Sesión
+                    </Link>}
+                </>
             ) }
-
-            
-
         </div>
     </>
   )
