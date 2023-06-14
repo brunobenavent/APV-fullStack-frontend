@@ -1,19 +1,32 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Alerta from "./Alerta"
-import clienteAxios from "../config/axios"
 import usePacientes from "../hooks/usePacientes"
 
 const Formulario = () => {
-
     const [nombre, setNombre] = useState('')
     const [propietario, setPropietario] = useState('')
     const [email, setEmail] = useState('')
     const [fecha, setFecha] = useState('')
     const [sintomas, setSintomas] = useState('')
+    const [id, setId] = useState(null)
 
     const [alerta, setAlerta] = useState('')
     
-    const {guardarPaciente} = usePacientes()
+    const {guardarPaciente, paciente} = usePacientes()
+
+
+    useEffect( () => {
+        if(paciente?.nombre){
+            setNombre(paciente?.nombre)
+            setPropietario(paciente?.propietario)
+            setEmail(paciente?.email)
+            setFecha(paciente?.fecha)
+            setSintomas(paciente?.sintomas)
+            setId(paciente?._id)
+        }
+    },[paciente] )
+ 
+
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -25,15 +38,13 @@ const Formulario = () => {
             return
         }
         setAlerta({})
-        guardarPaciente({nombre, propietario, email, fecha, sintomas})
+        guardarPaciente({nombre, propietario, email, fecha, sintomas, id})
         
     }
   return (
     <>
-        <p className="text-lg text-center mb-10">
-            Añade tus Pacientes y {''}
-            <span className="text-indigo-600 font-bold">Adminístralos</span>
-        </p>
+        <h2 className="font-black text-3xl text-center">Administrador de Pacientes</h2>
+        <p className="text-xl mt-5 mb-10 text-center">Añade tus Pacientes y {''}<span className="text-indigo-600 font-bold">Adminístralos</span></p>
         {alerta.msg && <Alerta 
             alerta={alerta}
         />}
@@ -113,7 +124,7 @@ const Formulario = () => {
             <input
                 type="submit"
                 className="bg-indigo-600 w-full p-3 rounded-lg text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-                value="Agregar Paciente"
+                value={id ? "Guardar Cambios" : "Agregar Paciente"}
             />
         </form>
     </>
