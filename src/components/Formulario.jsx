@@ -10,7 +10,7 @@ const Formulario = () => {
     const [sintomas, setSintomas] = useState('')
     const [id, setId] = useState(null)
 
-    const [alerta, setAlerta] = useState('')
+    const [alerta, setAlerta] = useState({})
     
     const {guardarPaciente, paciente} = usePacientes()
 
@@ -37,8 +37,16 @@ const Formulario = () => {
             })
             return
         }
-        setAlerta({})
         guardarPaciente({nombre, propietario, email, fecha, sintomas, id})
+        setAlerta({
+            msg: 'Paciente editado correctamente'
+        })
+        setNombre('')
+        setPropietario('')
+        setEmail('')
+        setFecha('')
+        setSintomas('')
+        setId('')
         
     }
   return (

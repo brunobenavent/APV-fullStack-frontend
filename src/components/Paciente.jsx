@@ -8,7 +8,7 @@ const Paciente = ({paciente}) => {
         return new Intl.DateTimeFormat('es-ES', {dateStyle: 'long'}).format(nuevaFecha)
     }
 
-    const {setEdicion} = usePacientes()
+    const {setEdicion, eliminarPaciente} = usePacientes()
 
 
   return (
@@ -37,6 +37,7 @@ const Paciente = ({paciente}) => {
         <button
             type="button"
             className="py-2 px-10 bg-red-600 hover:bg-red-700 text-white uppercase font-bold rounded-lg"
+            onClick={() => eliminarPaciente(_id)}
             >Eliminar</button>
       </div>
     </div>
