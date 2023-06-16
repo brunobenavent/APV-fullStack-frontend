@@ -73,6 +73,7 @@ export const PacientesProvider = ({children}) => {
 
 
     }
+
     const setEdicion = paciente => {
         setPaciente(paciente)
     }
