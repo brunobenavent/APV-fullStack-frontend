@@ -59,7 +59,10 @@ const AuthProvider = ({children}) => {
             })
             console.log(data)
         } catch (error) {
-            console.log(error)
+            setAlerta({
+                error: true,
+                msg: error.response.data.msg
+            })
         }
     }
 
