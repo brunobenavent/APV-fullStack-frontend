@@ -1,18 +1,38 @@
 import { useState } from "react"
 import AdminNav from "../components/AdminNav"
 import Alerta from "../components/Alerta"
+import useAuth from "../hooks/useAuth"
+
 
 const CambiarPassword = () => {
   const [alerta, setAlerta] = useState({})
-  const [password, setPassword] = useState({})
+  const [password, setPassword] = useState({
+    pwd_actual: '',
+    pwd_nuevo: ''
+  })
+  const {guardarPassword} = useAuth()
 
-
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    console.log(Object.values(password))
+    if(Object.values(password).some( campo => campo === '')){
+      setAlerta({
+        error: true,
+        msg: "Todos los campos son obligatorios"
+      })
+
+      return
+    }
+    if(password.pwd_nuevo.length < 6 ){
+      setAlerta({
+        error: true,
+        msg: "El password debe de ser de mínimo de 6 caracteres"
+      })
+        return
+    }
+    const respuesta = await guardarPassword(password)
+    setAlerta(respuesta)
+
   }
-
-
 
   return (
     <>
